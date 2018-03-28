@@ -23,7 +23,7 @@ RESTAURANT_LIST = [
     'Jerry Ferrer!',
     'La Belle et la Boeuf, eat beef and save a chicken.',
     'La Brigade, mangia una buona pizza',
-    'Il Focolaio, mangia una buona pizza'
+    'Il Focolaio, mangia una buona pizza',
     'Soup Bol!',
     'Sushi Nippon'
 ]
