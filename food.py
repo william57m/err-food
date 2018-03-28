@@ -1,4 +1,8 @@
+import json
 import random
+
+from urllib.request import Request
+from urllib.request import urlopen
 
 from errbot import botcmd
 from errbot import BotPlugin
@@ -26,14 +30,52 @@ RESTAURANT_LIST = [
 
 
 class Food(CrontabMixin, BotPlugin):
+    TIMEZONE = 'America/New_York'
     CRONTAB = [
         '30 11 * * * .food_time_call @mix-squad'
     ]
+
+    def activate(self):
+        super().activate()
+        self.CRONTAB = self.config['CRONTAB']
+        self.activate_crontab()
+
+    def get_configuration_template(self):
+        return {
+            'API_KEY': 'TO_BE_DEFINED',
+            'LATITUDE': '45.503215',
+            'LONGITUDE': '-73.571466',
+            'RADIUS_METERS': '1000',
+            'CRONTAB': [
+                '30 11 * * * .food_time_call @mix-squad'
+            ]
+        }
 
     def food_time_call(self):
         return random.choice(FOOD_TIME_SENTENCES)
 
     @botcmd
-    def pick(self, msg, args):
+    def restopicker(self, msg, args):
         text = 'I suggest ' + random.choice(RESTAURANT_LIST)
         return text
+
+    @botcmd
+    def restoyelp(self):
+        # Get params
+        api_key = self.config['API_KEY']
+        latitude = self.config['LATITUDE']
+        longitude = self.config['LONGITUDE']
+        radius_meters = self.config['RADIUS_METERS']
+        url = f'https://api.yelp.com/v3/businesses/search?term=food&latitude={latitude}&longitude={longitude}&radius={radius_meters}'
+
+        # Request
+        q = Request(url)
+        q.add_header('Authorization', f'Bearer {api_key}')
+        response = urlopen(q).read().decode()
+        response = json.loads(response)
+        restaurants = response['businesses']
+        restaurant = random.choice(restaurants)
+        return self.format_result(restaurant)
+
+    def format_result(self, restaurant):
+        return restaurant['name']
