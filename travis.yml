@@ -6,6 +6,6 @@ python:
   - "3.6"
 sudo: false
 install:
-  - pip install tox-travis
+  - pip install dev-requirements.txt
 script:
   - pytest tests.py
