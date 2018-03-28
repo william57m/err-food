@@ -7,7 +7,17 @@ extra_plugin_dir = '.'
 pytest_plugins = ['errbot.backends.test']
 
 
-def test_restopicker(testbot):
-    testbot.push_message('!restopicker')
+def test_resto_pick(testbot):
+    testbot.push_message('!resto pick')
     result = testbot.pop_message()
     assert result is not None
+
+def test_resto_yelp(testbot):
+    testbot.push_message('!resto yelp')
+    result = testbot.pop_message()
+    assert result is not None
+
+def test_resto_doc(testbot):
+    testbot.push_message('!resto unvalid_command')
+    result = testbot.pop_message()
+    assert result == "This is not a valid command man, please use 'random' or 'yelp'"

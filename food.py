@@ -51,12 +51,25 @@ class Food(CrontabMixin, BotPlugin):
         return random.choice(FOOD_TIME_SENTENCES)
 
     @botcmd
-    def restopicker(self, msg, args):
+    def resto(self, msg, args):
+
+        # Documentation
+        if not args:
+            return self.return_doc()
+
+        # Get state
+        if args == 'pick':
+            return self.random_list(msg, args)
+        elif args == 'yelp':
+            return self.random_yelp(msg, args)
+        else:
+            return self.return_doc()
+
+    def random_list(self, msg, args):
         text = 'I suggest ' + random.choice(RESTAURANT_LIST)
         return text
 
-    @botcmd
-    def restoyelp(self, msg, args):
+    def random_yelp(self, msg, args):
         # Get params
         api_key = self.config['API_KEY']
         latitude = self.config['LATITUDE']
@@ -90,3 +103,7 @@ class Food(CrontabMixin, BotPlugin):
                 ('Price', restaurant['price'])
             )
         )
+
+    def return_doc(self):
+        return "This is not a valid command man, please use 'pick' or 'yelp'"
+
