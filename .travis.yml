@@ -5,6 +5,7 @@ python:
   - "3.5"
   - "3.6"
 sudo: false
+install:
+  - pip install -r dev-requirements.txt
 script:
-  - pip install dev-requirements.txt
   - pytest tests.py
