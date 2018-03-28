@@ -37,7 +37,6 @@ class Food(CrontabMixin, BotPlugin):
 
     def activate(self):
         super().activate()
-        self.CRONTAB = self.config['CRONTAB']
         self.activate_crontab()
 
     def get_configuration_template(self):
@@ -45,10 +44,7 @@ class Food(CrontabMixin, BotPlugin):
             'API_KEY': 'TO_BE_DEFINED',
             'LATITUDE': '45.503215',
             'LONGITUDE': '-73.571466',
-            'RADIUS_METERS': '1000',
-            'CRONTAB': [
-                '30 11 * * * .food_time_call @mix-squad'
-            ]
+            'RADIUS_METERS': '1000'
         }
 
     def food_time_call(self):
