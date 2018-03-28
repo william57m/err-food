@@ -78,11 +78,16 @@ class Food(CrontabMixin, BotPlugin):
         return self.format_result(msg, restaurant)
 
     def format_result(self, msg, restaurant):
+        body = '({meters} meters away from the office)'.format(meters=str(int(restaurant['distance'])))
         return self.send_card(
             title=restaurant['name'],
-            body=', '.join(restaurant['location']['display_address']),
+            body=body,
             thumbnail=restaurant['image_url'],
             image=restaurant['image_url'],
             link=restaurant['url'],
-            in_reply_to=msg
+            in_reply_to=msg,
+            fields=(
+                ('Price', restaurant['price']), 
+                ('Address', ', '.join(restaurant['location']['display_address']))
+            )
         )
