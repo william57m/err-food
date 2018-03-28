@@ -1,0 +1,9 @@
+[Core]
+Name = Food
+Module = food
+
+[Documentation]
+Description = Restaurant picker and eating time reminder
+
+[Python]
+Version = 3
