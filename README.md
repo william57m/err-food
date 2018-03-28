@@ -14,3 +14,10 @@ Trigger food_time_call function at 11:30 and return the result in the channel @m
 ## Usage
 
 Choose a restaurant: `!food-pick`
+
+## Run tests
+```
+pip install -r requirements.txt
+pip install -r dev-requirements.txt
+pytest tests.py
+```

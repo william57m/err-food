@@ -60,7 +60,7 @@ class Food(CrontabMixin, BotPlugin):
         return text
 
     @botcmd
-    def restoyelp(self):
+    def restoyelp(self, msg, args):
         # Get params
         api_key = self.config['API_KEY']
         latitude = self.config['LATITUDE']
