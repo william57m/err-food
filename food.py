@@ -78,4 +78,10 @@ class Food(CrontabMixin, BotPlugin):
         return self.format_result(restaurant)
 
     def format_result(self, restaurant):
-        return restaurant['name']
+        return self.send_card(
+            title=restaurant['name'],
+            body=', '.join(restaurant['display_address']),
+            thumbnail=restaurant['image_url'],
+            image=restaurant['image_url'],
+            link=restaurant['url']
+        )
