@@ -4,11 +4,9 @@
 
 ## Overview
 
-This plugin is a eating food reminder and a random restaurant picker
+This plugin is a eating food reminder and a random restaurant picker (from raw list or yelp)
 
 ## Configuration
-
-Trigger food_time_call function at 11:30 and return the result in the channel @mix-squad
 
 ```
 !plugin config Food { 'API_KEY': 'TO_BE_DEFINED', 'LATITUDE': '45.503215', 'LONGITUDE': '-73.571466', 'RADIUS_METERS': '1000'}
@@ -16,7 +14,9 @@ Trigger food_time_call function at 11:30 and return the result in the channel @m
 
 ## Usage
 
-Choose a restaurant: `!food-pick`
+Choose a random restaurant from a raw list: `!resto pick`
+
+Choose a random restaurant from yelp around your position: `!resto yelp`
 
 ## Run tests
 ```
