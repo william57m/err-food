@@ -100,7 +100,8 @@ class Food(CrontabMixin, BotPlugin):
             fields=(
                 ('Address', ', '.join(restaurant['location']['display_address'])),
                 ('Distance', '{meters} meters away from the office'.format(meters=str(int(restaurant['distance'])))),
-                ('Price', restaurant['price'])
+                ('Price', restaurant['price']),
+                ('Rating', restaurant['rating'])
             )
         )
 

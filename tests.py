@@ -20,4 +20,4 @@ def test_resto_yelp(testbot):
 def test_resto_doc(testbot):
     testbot.push_message('!resto unvalid_command')
     result = testbot.pop_message()
-    assert result == "This is not a valid command man, please use 'random' or 'yelp'"
+    assert result == "This is not a valid command man, please use 'pick' or 'yelp'"
