@@ -75,13 +75,14 @@ class Food(CrontabMixin, BotPlugin):
         response = json.loads(response)
         restaurants = response['businesses']
         restaurant = random.choice(restaurants)
-        return self.format_result(restaurant)
+        return self.format_result(msg, restaurant)
 
-    def format_result(self, restaurant):
+    def format_result(self, msg, restaurant):
         return self.send_card(
             title=restaurant['name'],
-            body=', '.join(restaurant['display_address']),
+            body=', '.join(restaurant['location']['display_address']),
             thumbnail=restaurant['image_url'],
             image=restaurant['image_url'],
-            link=restaurant['url']
+            link=restaurant['url'],
+            in_reply_to=msg
         )
