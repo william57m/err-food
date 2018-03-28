@@ -1,5 +1,7 @@
 # ErrFood
 
+[![Build Status](https://travis-ci.org/william57m/err-food.svg?branch=master)](https://travis-ci.org/william57m/err-food)
+
 ## Overview
 
 This plugin is a eating food reminder and a random restaurant picker
