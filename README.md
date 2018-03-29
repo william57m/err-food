@@ -9,7 +9,7 @@ This plugin is a eating food reminder and a random restaurant picker (from raw l
 ## Configuration
 
 ```
-!plugin config Food { 'API_KEY': 'TO_BE_DEFINED', 'LATITUDE': '45.503215', 'LONGITUDE': '-73.571466', 'RADIUS_METERS': '1000'}
+!plugin config Food { 'API_KEY': 'TO_BE_DEFINED', 'LATITUDE': '45.503215', 'LONGITUDE': '-73.571466', 'RADIUS_METERS': '1000', 'PRICE': '1,2'}
 ```
 
 ## Usage

@@ -94,11 +94,13 @@ class Food(CrontabMixin, BotPlugin):
         api_key = self.config['API_KEY']
         latitude = self.config['LATITUDE']
         longitude = self.config['LONGITUDE']
+        price = self.config['PRICE']
         radius_meters = self.config['RADIUS_METERS']
-        url = 'https://api.yelp.com/v3/businesses/search?latitude={latitude}&longitude={longitude}&radius={radius_meters}&term={term}'.format(
+        url = 'https://api.yelp.com/v3/businesses/search?latitude={latitude}&longitude={longitude}&radius={radius_meters}&price={price}&term={term}'.format(
             latitude=latitude, 
             longitude=longitude, 
             radius_meters=radius_meters,
+            price=price,
             term=term
         )
 
