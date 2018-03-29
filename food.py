@@ -25,6 +25,9 @@ RESTAURANT_LIST = [
     'Soup Bol!',
     'Sushi Nippon'
 ]
+DEFAULT_LATITUDE = '45.503215'
+DEFAULT_LONGITUDE = '-73.571466'
+DEFAULT_RADIUS_METERS = '1000'
 
 
 class Food(CrontabMixin, BotPlugin):
@@ -40,9 +43,9 @@ class Food(CrontabMixin, BotPlugin):
     def get_configuration_template(self):
         return {
             'API_KEY': 'TO_BE_DEFINED',
-            'LATITUDE': '45.503215',
-            'LONGITUDE': '-73.571466',
-            'RADIUS_METERS': '1000'
+            'LATITUDE': DEFAULT_LATITUDE,
+            'LONGITUDE': DEFAULT_LONGITUDE,
+            'RADIUS_METERS': DEFAULT_RADIUS_METERS
         }
 
     def food_time_call(self, polled_time, identity):
@@ -50,33 +53,43 @@ class Food(CrontabMixin, BotPlugin):
 
     @botcmd
     def resto(self, msg, args):
+        """ Returns documentation """
+        return self.return_doc()
 
-        # Documentation
-        if not args:
-            return self.return_doc()
-
-        # Get state
-        if args == 'pick':
-            return self.random_list(msg, args)
-        elif args == 'yelp':
-            return self.random_yelp(msg, args)
-        else:
-            return self.return_doc()
-
-    def random_list(self, msg, args):
+    @botcmd
+    def resto_pick(self, msg, args):
+        """ Returns a random restaurant among a predefined list """
         text = 'I suggest ' + random.choice(RESTAURANT_LIST)
         return text
 
-    def random_yelp(self, msg, args):
+    @botcmd
+    def resto_yelp(self, msg, args):
+        """ Returns a random restaurant from Yelp """
+        restaurants = self._search_yelp()
+        restaurant = random.choice(restaurants)
+        return self.format_result_card(msg, restaurant)
+
+    @botcmd
+    def resto_search(self, msg, search_value):
+        """ Returns a list of restaurant from yelp """
+        restaurants = self._search_yelp(search_value)
+        return self.format_results(restaurants)
+
+    #
+    # API request
+    #
+
+    def _search_yelp(self, term=''):
         # Get params
         api_key = self.config['API_KEY']
         latitude = self.config['LATITUDE']
         longitude = self.config['LONGITUDE']
         radius_meters = self.config['RADIUS_METERS']
-        url = 'https://api.yelp.com/v3/businesses/search?term=food&latitude={latitude}&longitude={longitude}&radius={radius_meters}'.format(
+        url = 'https://api.yelp.com/v3/businesses/search?latitude={latitude}&longitude={longitude}&radius={radius_meters}&term={term}'.format(
             latitude=latitude, 
             longitude=longitude, 
-            radius_meters=radius_meters
+            radius_meters=radius_meters,
+            term=term
         )
 
         # Request
@@ -85,10 +98,13 @@ class Food(CrontabMixin, BotPlugin):
         response = urlopen(q).read().decode()
         response = json.loads(response)
         restaurants = response['businesses']
-        restaurant = random.choice(restaurants)
-        return self.format_result(msg, restaurant)
+        return restaurants
 
-    def format_result(self, msg, restaurant):
+    #
+    # Formatting
+    #
+
+    def format_result_card(self, msg, restaurant):
         return self.send_card(
             title=restaurant['name'],
             thumbnail=restaurant['image_url'],
@@ -103,6 +119,21 @@ class Food(CrontabMixin, BotPlugin):
             )
         )
 
-    def return_doc(self):
-        return "This is not a valid command man, please use 'pick' or 'yelp'"
+    def format_results(self, restaurants):
+        restaurants_str = [self.format_restaurant(restaurant) for restaurant in restaurants]
+        return '\n'.join(restaurants_str)
 
+    def format_restaurant(self, restaurant):
+        return '<{link}|{name}> ({price}) [{meters} meters away]'.format(
+            link=restaurant['url'],
+            name=restaurant['name'],
+            price=restaurant['price'] if 'price' in restaurant else '',
+            meters=str(int(restaurant['distance'])) if 'distance' in restaurant else ''
+        )
+
+    #
+    # Docs
+    #
+
+    def return_doc(self):
+        return "This is not a valid command man, please use 'pick', 'search <text>' or 'yelp'"

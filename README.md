@@ -19,8 +19,7 @@ Choose a random restaurant from a raw list: `!resto pick`
 Choose a random restaurant from yelp around your position: `!resto yelp`
 
 ## Run tests
+
 ```
-pip install -r requirements.txt
-pip install -r dev-requirements.txt
-pytest tests.py
+tox
 ```
