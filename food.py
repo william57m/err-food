@@ -10,9 +10,7 @@ from errcron import CrontabMixin
 
 
 FOOD_TIME_SENTENCES = [
-    'Do you hear this howling? :will_mura:',
-    'What are you doing guys? It\'s time to eat.',
-    'Still working? Stop and go eating, I\'m starving.'
+    'Do you hear this howling? :will_mura:'
 ]
 
 RESTAURANT_LIST = [
@@ -32,7 +30,7 @@ RESTAURANT_LIST = [
 class Food(CrontabMixin, BotPlugin):
     TIMEZONE = 'America/New_York'
     CRONTAB = [
-        '30 11 * * * .food_time_call @mix-squad'
+        '35 11 * * * .food_time_call @mix-squad'
     ]
 
     def activate(self):
@@ -47,7 +45,7 @@ class Food(CrontabMixin, BotPlugin):
             'RADIUS_METERS': '1000'
         }
 
-    def food_time_call(self):
+    def food_time_call(self, polled_time, identity):
         return random.choice(FOOD_TIME_SENTENCES)
 
     @botcmd
