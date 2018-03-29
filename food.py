@@ -25,9 +25,13 @@ RESTAURANT_LIST = [
     'Soup Bol!',
     'Sushi Nippon'
 ]
+
+# Yelp Documentation
+# https://www.yelp.com/developers/documentation/v3/business_search
 DEFAULT_LATITUDE = '45.503215'
 DEFAULT_LONGITUDE = '-73.571466'
 DEFAULT_RADIUS_METERS = '1000'
+DEFAULT_PRICE_RANGE = '1,2'  # 1=$, 2=$$, 3=$$$
 
 
 class Food(CrontabMixin, BotPlugin):
@@ -37,15 +41,15 @@ class Food(CrontabMixin, BotPlugin):
     ]
 
     def activate(self):
-        super().activate()
-        self.activate_crontab()
+        super().activate() 
 
     def get_configuration_template(self):
         return {
             'API_KEY': 'TO_BE_DEFINED',
             'LATITUDE': DEFAULT_LATITUDE,
             'LONGITUDE': DEFAULT_LONGITUDE,
-            'RADIUS_METERS': DEFAULT_RADIUS_METERS
+            'RADIUS_METERS': DEFAULT_RADIUS_METERS,
+            'PRICE': DEFAULT_PRICE_RANGE
         }
 
     def food_time_call(self, polled_time, identity):
@@ -55,6 +59,12 @@ class Food(CrontabMixin, BotPlugin):
     def resto(self, msg, args):
         """ Returns documentation """
         return self.return_doc()
+
+    @botcmd
+    def resto_reminder(self, msg, args):
+        """ Enable food reminder """
+        self.activate_crontab()
+        return 'Reminder activated'
 
     @botcmd
     def resto_pick(self, msg, args):
@@ -124,7 +134,7 @@ class Food(CrontabMixin, BotPlugin):
         return '\n'.join(restaurants_str)
 
     def format_restaurant(self, restaurant):
-        return '<{link}|{name}> ({price}) [{meters} meters away]'.format(
+        return '- <{link}|{name}> ({price}) [{meters} meters away]'.format(
             link=restaurant['url'],
             name=restaurant['name'],
             price=restaurant['price'] if 'price' in restaurant else '',
