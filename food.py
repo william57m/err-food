@@ -136,7 +136,7 @@ class Food(CrontabMixin, BotPlugin):
         return '\n'.join(restaurants_str)
 
     def format_restaurant(self, restaurant):
-        return '- <{link}|{name}> ({price}) [{meters} meters away]'.format(
+        return '- [{name}]({link}) ({price}) [{meters} meters away]'.format(
             link=restaurant['url'],
             name=restaurant['name'],
             price=restaurant['price'] if 'price' in restaurant else '',
