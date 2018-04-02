@@ -54,7 +54,9 @@ class Food(CrontabMixin, BotPlugin):
         }
 
     def food_time_call(self, polled_time, identity):
-        return random.choice(FOOD_TIME_SENTENCES)
+        user = self.build_identifier(identity)
+        text = random.choice(FOOD_TIME_SENTENCES)
+        return self.send(user, text)
 
     #
     # Resto Commands
