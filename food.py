@@ -37,11 +37,12 @@ DEFAULT_PRICE_RANGE = '1,2'  # 1=$, 2=$$, 3=$$$
 class Food(CrontabMixin, BotPlugin):
     TIMEZONE = 'America/New_York'
     CRONTAB = [
-        '35 11 * * * .food_time_call @mix-squad'
+        '30 11 * * * .food_time_call @mix-squad'
     ]
 
     def activate(self):
-        super().activate() 
+        super().activate()
+        self.activate_crontab()
 
     def get_configuration_template(self):
         return {
@@ -55,16 +56,9 @@ class Food(CrontabMixin, BotPlugin):
     def food_time_call(self, polled_time, identity):
         return random.choice(FOOD_TIME_SENTENCES)
 
-    @botcmd
-    def resto(self, msg, args):
-        """ Returns documentation """
-        return self.return_doc()
-
-    @botcmd
-    def resto_reminder(self, msg, args):
-        """ Enable food reminder """
-        self.activate_crontab()
-        return 'Reminder activated'
+    #
+    # Resto Commands
+    #
 
     @botcmd
     def resto_pick(self, msg, args):
@@ -72,15 +66,19 @@ class Food(CrontabMixin, BotPlugin):
         text = 'I suggest ' + random.choice(RESTAURANT_LIST)
         return text
 
+    #
+    # Yelp Commands
+    #
+
     @botcmd
-    def resto_yelp(self, msg, args):
+    def yelp_pick(self, msg, args):
         """ Returns a random restaurant from Yelp """
         restaurants = self._search_yelp()
         restaurant = random.choice(restaurants)
         return self.format_result_card(msg, restaurant)
 
     @botcmd
-    def resto_search(self, msg, search_value):
+    def yelp_search(self, msg, search_value):
         """ Returns a list of restaurant from yelp """
         restaurants = self._search_yelp(search_value)
         return self.format_results(restaurants)
@@ -142,10 +140,3 @@ class Food(CrontabMixin, BotPlugin):
             price=restaurant['price'] if 'price' in restaurant else '',
             meters=str(int(restaurant['distance'])) if 'distance' in restaurant else ''
         )
-
-    #
-    # Docs
-    #
-
-    def return_doc(self):
-        return "This is not a valid command man, please use 'pick', 'search <text>' or 'yelp'"
