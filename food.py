@@ -37,7 +37,7 @@ DEFAULT_PRICE_RANGE = '1,2'  # 1=$, 2=$$, 3=$$$
 class Food(CrontabMixin, BotPlugin):
     TIMEZONE = 'America/New_York'
     CRONTAB = [
-        '35 11 * * * .food_time_call #mix-squad'
+        '35 11 * * 1-5 .food_time_call #mix-squad' # At 11:35 on every day-of-week from Monday through Friday.
     ]
 
     def activate(self):
