@@ -42,7 +42,6 @@ class Food(CrontabMixin, BotPlugin):
 
     def activate(self):
         super().activate()
-        self.activate_crontab()
 
     def get_configuration_template(self):
         return {
